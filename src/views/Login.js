@@ -41,7 +41,7 @@ const Login = (props) => {
                     <Col md={4} className={'align-self-center offset-md-4 bg-light'}>
                         {warningShow && <Alert color={'primary'} className={'text-center text-dark font-weight-bold mb-2'}>Wrong Email Or Password</Alert>}
                         <Form>
-                            <FormGroup>
+                            <FormGroup  style={{marginTop: 10}}>
                                 <Label for={'email'}>Email</Label>
                                 <Input onChange={val=> setEmail(val.target.value)} type={'email'} placeholder={'Type Email Address'} id="email" required />
                             </FormGroup>

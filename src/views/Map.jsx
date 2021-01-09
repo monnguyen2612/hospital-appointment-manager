@@ -4,7 +4,7 @@ import PagesDropdown from '../components/util/PagesDropdown';
 import { fetchPharmacists } from '../redux/actions/admin.action';
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchAllPharmacists, deleteUser } from '../services/admin.services';
+import { fetchAllPharmacists, deleteSpecialized } from '../services/admin.services';
 import UpdatPharmacist from '../components/modals/UpdatePharmacist';
 
 class Map extends React.Component {
@@ -17,7 +17,7 @@ class Map extends React.Component {
   }
 
   deleteButtonHandler = (pharmacistId) => {
-    deleteUser(pharmacistId, 4).then(_ => window.location.reload()).catch(_ => this.props.history.push('/')).catch(_ => this.setState({ showAlert: true })).catch(_ => this.setState({ showAlert: true }));
+    deleteSpecialized(pharmacistId, 4).then(_ => window.location.reload()).catch(e => this.setState({ error: e.message }));
   }
   render() {
     return (
@@ -30,22 +30,18 @@ class Map extends React.Component {
                   <PagesDropdown size={this.props.pages}/>
                 </Col>
                 <Col md={6}>
-                  <Link to={'/admin/new-pharmacist'} className={'btn btn-dark'}>Add New Pharmacist</Link>
+                  <Link to={'/admin/new-pharmacist'} className={'btn btn-dark'}>Thêm Chuyên Khoa</Link>
                 </Col>
               </Row>
-              {this.props.pharmacistList.length > 0 ?
+              {this.props.pharmacistList.length >= 0 ?
                 <Card>
-                  <CardHeader>Pharmacists</CardHeader>
+                  <CardHeader>Chuyên Khoa</CardHeader>
                   <CardBody className="all-icons">
                       <Table responsive hover>
                         <thead>
                           <tr>
                             <th>Name</th>
-                            <th>Email</th>
-                            <th>Gender</th>
-                            <th>DOB</th>
-                            <th>Tel Number</th>
-                            <th>Address</th>
+                            <th>Hospitals</th>
                             <th>Delete</th>
                             <th>Update</th>
                           </tr>
@@ -53,12 +49,8 @@ class Map extends React.Component {
                         <tbody>
                           {this.props.pharmacistList.map(pharmacist => (
                             <tr key={pharmacist.id}>
-                              <td>{pharmacist.full_name}</td>
-                              <td>{pharmacist.email}</td>
-                              <td>{pharmacist.gender}</td>
-                              <td>{pharmacist.dob}</td>
-                              <td>{pharmacist.tel_number}</td>
-                              <td>{pharmacist.address}</td>
+                              <td>{pharmacist.fullName}</td>
+                              <td>{pharmacist.hospitals}</td>
                               <td><Button onClick={() => this.deleteButtonHandler(pharmacist.id)} type={'button'} color={'info'}>Delete</Button></td>
                               <td><UpdatPharmacist id={pharmacist.id}/></td>
                             </tr>

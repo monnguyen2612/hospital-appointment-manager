@@ -9,13 +9,9 @@ export const NewPharmacist = (props) => {
     const submitButtonHandler = () => {
         let newPharmacist = {
             fullName: document.getElementById('fullName').value,
-            email: document.getElementById('email').value,
-            gender: gender,
-            dob: document.getElementById('dob').value,
-            telNumber: document.getElementById('telNumber').value,
-            address: document.getElementById('address').value
+            hospitals: document.getElementById('hospitals').value
         }
-        addNewPharmacist(newPharmacist).then(_ => props.history.push('/admin/pharmacists/1')).catch(e => setError(e.message));
+        addNewPharmacist(newPharmacist).then(_ => props.history.push('/admin/pharmacist/1')).catch(e => setError(e.message));
     }
     return (
         <div className={'content'}>
@@ -23,37 +19,19 @@ export const NewPharmacist = (props) => {
                 {error !== null && <Alert className={'w-100'}>{error}</Alert>}
                 <Col md={12}>
                     <Card>
-                        <CardHeader>Dược Sĩ</CardHeader>
+                        <CardHeader>Chuyên Khoa</CardHeader>
                         <CardBody>
                             <Form>
                                 <FormGroup row>
-                                    <Col md={6}>
-                                        <Label for={'fullName'}>Họ và tên</Label>
-                                        <Input type={'text'} id={'fullName'} placeholder={'Type Fullname Name'}/>
-                                    </Col>
-                                    <Col md={6}>
-                                        <Label for={'email'}>Email</Label>
-                                        <Input type={'email'} id={'email'} placeholder={'Type Email ADdress'} required/>
+                                    <Col md={12}>
+                                        <Label for={'fullName'}>Tên Khoa</Label>
+                                        <Input type={'text'} id={'fullName'} placeholder={'Type Specialized'}/>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md={6}>
-                                        <Label fro={'dob'}>Ngày tháng năm sinh</Label>
-                                        <Input type={'date'} id={'dob'} required/>
-                                    </Col>
-                                    <Col md={6}>
-                                        <CustomInput onChange={value=> setGender(value.target.value)} type={'radio'} label={'Male'} value={'male'} name={'gender'} id={'male'} />
-                                        <CustomInput onChange={value=> setGender(value.target.value)} type={'radio'} label={'Female'} value={'female'} name={'gender'} id={'female'}/>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md={6}>
-                                        <Label for={'telNum'}>Số điện thoại</Label>
-                                        <Input type={'tel'} id={'telNumber'} placeholder={'Type Telephone Number'} required/>
-                                    </Col>
-                                    <Col md={6}>
-                                        <Label for={'address'}>Địa chỉ</Label>
-                                        <Input type={'textarea'} placeholder={'Type Address'} id={'address'} required/>
+                                        <Label for={'hospitals'}>Bệnh Viện</Label>
+                                        <Input type={'textarea'} placeholder={'Type Hospital'} id={'hospitals'} required/>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup>

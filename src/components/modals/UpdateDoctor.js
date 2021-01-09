@@ -6,7 +6,7 @@ export const UpdateDoctor = ({id}) => {
     const toggle = () => setIsOpen(!isOpen);
     const [doctor, setDoctor] = React.useState(null);
     React.useEffect(() => { 
-        getById(2, id).then(doctor => setDoctor(doctor)).catch(e => console.log(e));
+        getById(2, id).then(doctor => setDoctor(doctor[0])).catch(e => console.log(e));
     }, []);
     const updateButtonHandler = () => {
         let doctor = {
@@ -28,11 +28,11 @@ export const UpdateDoctor = ({id}) => {
                     {doctor !== null ? <Form>
                         <FormGroup>
                             <Label for={'fullName'}>full Name</Label>
-                            <Input bsSize={'sm'} defaultValue={doctor.full_name} type={'text'} className={'form-control form-control-sm'} placeholder={'Type Doctor Name'} id={'fullName'}/>
+                            <Input bsSize={'sm'} defaultValue={doctor.fullName} type={'text'} className={'form-control form-control-sm'} placeholder={'Type Doctor Name'} id={'fullName'}/>
                         </FormGroup>
                         <FormGroup>
                             <Label for={'telNumber'}>Telephone Number</Label>
-                            <Input type={'tel'} defaultValue={doctor.tel_number} placeholder={'Type Telephone Number'} id={'telNumber'}/>
+                            <Input type={'tel'} defaultValue={doctor.telNumber} placeholder={'Type Telephone Number'} id={'telNumber'}/>
                         </FormGroup>
                         <FormGroup>
                             <Label for={'specialities'}>Specialities</Label>
@@ -44,7 +44,7 @@ export const UpdateDoctor = ({id}) => {
                         </FormGroup>
                         <FormGroup>
                             <Label for={'regNumber'}>Reg Number</Label>
-                            <Input type={'text'} id={'regNumber'} defaultValue={doctor.reg_number}/>
+                            <Input type={'text'} id={'regNumber'} defaultValue={doctor.regNumber}/>
                         </FormGroup>
                         <FormGroup>
                             <Button onClick={updateButtonHandler} color={'primary'}>Update</Button>

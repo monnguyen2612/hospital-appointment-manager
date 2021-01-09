@@ -3,13 +3,13 @@ import React from "react";
 
 // reactstrap components
 import { Card, CardHeader, CardBody, CardTitle, Row, Col, Table, Spinner, Button, Alert } from "reactstrap";
-import { fetchPatients } from '../redux/actions/admin.action';
+import { fetchHospitals } from '../redux/actions/admin.action';
 import { connect } from "react-redux";
-import { getAllPatients , deleteUser } from '../services/admin.services';
+import { getAllHospitals , deleteUser } from '../services/admin.services';
 import { Link } from "react-router-dom";
 import PagesDropdown from "components/util/PagesDropdown";
 import UpdatePatient from "components/modals/UpdatePatient";
-class Icons extends React.Component {
+class Hospital extends React.Component {
   state = {
     toggle: false,
     error : null
@@ -21,8 +21,8 @@ class Icons extends React.Component {
   }
   
   componentDidMount() {
-    getAllPatients(this.props.match.params.pageNo).then(jsonResponse => {
-      this.props.fetchPatients(jsonResponse);
+    getAllHospitals(this.props.match.params.pageNo).then(jsonResponse => {
+      this.props.fetchHospitals(jsonResponse);
     }).catch(e => {
       console.log(e);
     })
@@ -41,6 +41,7 @@ class Icons extends React.Component {
     return (
       <>
         <div className="content">
+          {console.log(this.props)}
           <Row>
             {this.state.error !== null && <Alert color={'info'}>{this.state.error}</Alert>}
             <Col md="12">
@@ -49,41 +50,35 @@ class Icons extends React.Component {
                   <PagesDropdown size={this.props.pages}/>
                 </Col>
                 <Col md={6}>
-                  <Link to={'/admin/new-patient'} className={'btn btn-dark'}>Thêm bệnh nhân</Link>
+                  <Link to={'/admin/new-hospital'} className={'btn btn-dark'}>Thêm bệnh viện</Link>
                 </Col>
               </Row>
               <Card className="demo-icons">
                 <CardHeader>
-                  <CardTitle tag="h5">Bệnh nhân</CardTitle>
+                  <CardTitle tag="h5">Bệnh Viện</CardTitle>
                 </CardHeader>
                 <CardBody className="all-icons">
-                  {this.props.patientList === undefined || this.props.patientList.length === 0 ? <div className={'d-flex justify-content-center w-100'}><Spinner size={'lg'} /></div> :
+                  {this.props.hospitals === undefined || this.props.hospitals.length === 0 ? <div className={'d-flex justify-content-center w-100'}><Spinner size={'lg'} /></div> :
                     <Table responsive hover>
                       <thead>
                         <tr>
                           <th>ID</th>
                           <th>Tên</th>
-                          <th>NIC</th>
-                          <th>Email</th>
-                          <th>Giới tính</th>
-                          <th>DOB</th>
                           <th>Số Điện Thoại</th>
                           <th>Địa chỉ</th>
+                          <th>Chuyên Khoa</th>
                           <th>Xóa</th>
                           <th>Sửa</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {this.props.patientList.map(patient => (
+                        {this.props.hospitals.map(patient => (
                           <tr key={patient.id}>
                             <td>{patient.id}</td>
                             <td>{patient.fullName}</td>
-                            <td>{patient.nic}</td>
-                            <td>{patient.email}</td>
-                            <td>{patient.gender}</td>
-                            <td>{patient.dob}</td>
                             <td>{patient.telNumber}</td>
                             <td>{patient.address}</td>
+                            <td>{patient.specializeds}</td>
                             <td><Button onClick={() => this.deleteButtonHandler(patient.id)} type={'button'} color={'info'}>Xóa</Button></td>
                             <td><UpdatePatient id={patient.id}/></td>
                           </tr>
@@ -102,13 +97,13 @@ class Icons extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  patientList: state.adminReducer.patientList,
+  hospitals: state.adminReducer.hospitals,
   pages: state.adminReducer.patientPages
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchPatients : patientResponse=>dispatch(fetchPatients(patientResponse))
+  fetchHospitals : response => dispatch(fetchHospitals(response)),
 })
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(Icons);
+export default connect(mapStateToProps,mapDispatchToProps)(Hospital);

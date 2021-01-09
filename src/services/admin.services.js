@@ -1,7 +1,7 @@
 import { BASE_URL } from "variables/values";
 import axios from 'axios';
 export async function getAllDoctors(pageNo) {
-    return fetch(`${BASE_URL}admin/all-doctors/${pageNo}`, {
+    return fetch(`https://falling-feather-5264.getsandbox.com/doctors`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
@@ -16,9 +16,10 @@ export async function getAllDoctors(pageNo) {
 }
 
 export async function addDoctor(fullName, email, address, specialities , gender , regNumber , telNumber) {
-    return fetch(`${BASE_URL}admin/add-new-doctor`, {
+    return fetch(`https://falling-feather-5264.getsandbox.com/doctors`, {
         method: 'POST',
         body: JSON.stringify({
+            id: Math.random().toString(36).substr(2, 9),
             email: email,
             role: 2,
             fullName: fullName,
@@ -47,7 +48,25 @@ export async function addDoctor(fullName, email, address, specialities , gender 
 }
 
 export async function deleteUser(id , role) {
-    return fetch(`${BASE_URL}admin/delete/${role}/${id}`, {
+    return fetch(`https://falling-feather-5264.getsandbox.com/doctors/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
+    }).then(response => {
+        if (response.ok)
+            return response.json();
+        else if (response.status === 401) {
+            localStorage.removeItem('authToken');
+            throw new Error('Unauthorized User');
+        } else
+            throw new Error('Something Went Wrong');
+    }).catch(e => { throw e });
+}
+
+export async function deleteSpecialized(id , role) {
+    return fetch(`https://falling-feather-5264.getsandbox.com:443/specializeds/${id}`, {
         method: 'DELETE',
         headers: {
             'Accept': 'application/json',
@@ -86,7 +105,7 @@ export async function getPagesCount() {
 }
 
 export async function getAllPatients(pageNo) {
-    return fetch(`${BASE_URL}admin/get-all-patients/${pageNo}`, {
+    return fetch(`https://bold-wildflower-7075.getsandbox.com/patients`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -105,7 +124,8 @@ export async function getAllPatients(pageNo) {
 }
 
 export async function addNewPatient(patient) {
-    return fetch(`${BASE_URL}admin/add-new-patient`, {
+    
+    return fetch(`https://bold-wildflower-7075.getsandbox.com/patient`, {
         method: 'POST',
         body: JSON.stringify({
             fullName: patient.fullName,
@@ -137,9 +157,39 @@ export async function addNewPatient(patient) {
         throw e;
     })
 }
+export async function addNewHospital(newHospital){
+    return fetch(`https://falling-feather-5264.getsandbox.com:443/hospitals`, {
+        method: 'POST',
+        body: JSON.stringify({
+            id: Math.random().toString(36).substr(2, 9),
+            fullName: newHospital.fullName,
+            specializeds: newHospital.specializeds,
+            address: newHospital.address,
+            image: newHospital.image,
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('authToken')}`
+        }
+    }).then(response => {
+        if (response.ok)
+            return response.json();
+        else if (response.status === 401)
+            throw new Error('UNAUTHORIZED');
+        else if (response.status === 409)
+            throw new Error('This Email Exists');
+        else if (response.status === 400)
+            throw new Error('Please Check All Fileds');
+        else
+            throw new Error('Something Went Wrong');
+    }).catch(e => {
+        throw e;
+    })
+}
 
 export async function fetchAllPharmacists(pageNo) {
-    return fetch(`${BASE_URL}admin/all-pharmacists/${pageNo}`, {
+    return fetch(`https://falling-feather-5264.getsandbox.com:443/specializeds`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -160,16 +210,12 @@ export async function fetchAllPharmacists(pageNo) {
 }
 
 export async function addNewPharmacist(pharmacist) {
-    return fetch(`${BASE_URL}admin/add-new-pharmacist`, {
+    return fetch(`https://falling-feather-5264.getsandbox.com:443/specializeds`, {
         method: 'POST',
         body: JSON.stringify({
+            id: Math.random().toString(36).substr(2, 9),
             fullName: pharmacist.fullName,
-            role: 4,
-            email: pharmacist.email,
-            gender: pharmacist.gender,
-            dob: pharmacist.dob,
-            telNumber: pharmacist.telNumber,
-            address: pharmacist.address
+            hospitals: pharmacist.hospitals
         }),
         headers: {
             'Content-Type': 'application/json',
@@ -194,6 +240,26 @@ export async function addNewPharmacist(pharmacist) {
 
 export async function getAllStaffMembers(pageNo) {
     return fetch(`${BASE_URL}admin/get-staff-members/${pageNo}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
+    }).then(response => {
+        if (response.ok)
+            return response.json();
+        else if (response.status === 401) {
+            localStorage.removeItem('authToken');
+            throw new Error('Unauthorized User');
+        } else
+            throw new Error('Something Went Wrong');
+    }).catch(e => {
+        throw e;
+    })
+}
+
+export async function getAllHospitals(pageNo) {
+    return fetch(`https://falling-feather-5264.getsandbox.com:443/hospitals`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -246,17 +312,20 @@ export async function addNewStaffMember(staffMember) {
     });
 }
 export function getById(role, id) {
-    return axios.get(`${BASE_URL}admin/get-role-and-id/${role}/${id}`, {
+    return fetch(`https://falling-feather-5264.getsandbox.com:443/doctors/${id}`, {
         headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('authToken')}`
         }
-    }).then(response => response.data).catch(e => {
+    }).then(response => {
+        return response.json()}).catch(e => {
         throw e;
     })
 }
 
 export function updateDoctor(doctor) {
-    return axios.patch(`${BASE_URL}admin/update-doctor`, doctor, {
+    return axios.put(`https://falling-feather-5264.getsandbox.com:443/doctors/${doctor.id}`, doctor, {
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('authToken')}`
         }
@@ -267,6 +336,7 @@ export function updateDoctor(doctor) {
 
 export function updatePatient(patient) {
     return axios.patch(`${BASE_URL}admin/update-patient`, patient, {
+        method: 'GET',
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('authToken')}`
         }

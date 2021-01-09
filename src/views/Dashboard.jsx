@@ -84,11 +84,10 @@ class Dashboard extends React.Component {
                     <tbody>
                       {this.props.doctorList.map(doctor => (
                         <tr key={doctor.id}>
-                          <td>{doctor.full_name}</td>
+                          <td>{doctor.fullName}</td>
                           <td>{doctor.email}</td>
                           <td>{doctor.gender}</td>
-                          <td>{doctor.tel_number}</td>
-                          <td>{doctor.reg_number}</td>
+                          <td>{doctor.telNumber}</td>
                           <td>{doctor.specialities}</td>
                           <td><Button onClick={() => this.deleteButtonHandler(doctor.id)} color={'dark'}>Xóa</Button></td>
                           <td>

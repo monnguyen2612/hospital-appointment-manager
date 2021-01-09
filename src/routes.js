@@ -2,9 +2,11 @@ import Dashboard from "views/Dashboard.jsx";
 import Notifications from "views/Notifications.jsx";
 import Icons from "views/Icons.jsx";
 import Maps from "views/Map.jsx";
+import Hospital from "views/Hospital.jsx";
 import NewDoctor from './views/NewDoctor';
 import NewPatient from './views/NewPatient';
 import NewPharmacist from './views/NewPharmacist';
+import NewHospital from './views/NewHospital';
 import { NewStaffMember } from "views/NewStaffMember";
 import LoginToPatient from './views/doctor/LoginToPatient';
 import AddPrescription from './views/doctor/AddPrescription';
@@ -32,7 +34,7 @@ export const routes = [
   },
   {
     path: "/pharmacist/:pageNo",
-    name: "Nhà Thuốc (/)",
+    name: "Chuyên Khoa",
     icon: "fas fa-pills",
     component: Maps,
     layout: "/admin",
@@ -43,6 +45,14 @@ export const routes = [
     name: "Nhân Viên",
     icon: "fas fa-user-alt",
     component: Notifications,
+    layout: "/admin",
+    visible: true
+  },
+  {
+    path: "/hospital/:pageNo",
+    name: "Bệnh Viện",
+    icon: "fas fa-hospital",
+    component: Hospital,
     layout: "/admin",
     visible: true
   },
@@ -67,6 +77,12 @@ export const routes = [
   {
     path: '/new-staff-member',
     component: NewStaffMember,
+    layout: '/admin',
+    visible: false
+  },
+  {
+    path: '/new-hospital',
+    component: NewHospital,
     layout: '/admin',
     visible: false
   }
